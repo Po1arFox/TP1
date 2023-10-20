@@ -11,7 +11,7 @@ protected:
 	string* name_books;
 	int number_of_books;
 
-	virtual void add_book(string) = 0;
+	virtual void add_book(string book) = 0;
 	virtual void delete_book() = 0;
 public:
 	virtual string get_fullname() = 0;
