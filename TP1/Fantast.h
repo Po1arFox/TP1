@@ -16,10 +16,6 @@ public:
 	bool get_isFilmed();
 
 	void set_fullname(string fullname)override;
-	void set_name_books(string* name_books)override;
-	void set_number_of_books(int new_nob)override;
-
-	void set_book(string, int old_book_id)override;
 
 	void set_isFilmed(bool isFilmed);
 

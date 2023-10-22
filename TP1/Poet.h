@@ -20,10 +20,6 @@ public:
 	void set_fullname(string fullname)override;
 	void set_years_of_birth(int year_of_birth);
 	void set_years_of_death(int year_of_death);
-	void set_name_books(string* name_books)override;
-	void set_number_of_books(int new_nob)override;
-
-	void set_book(string, int old_book_id)override;
 
 	//изменение данных
 	void add_book(string book)override;

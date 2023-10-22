@@ -127,6 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Fantast.cpp" />
+    <ClCompile Include="Novelist.cpp" />
+    <ClCompile Include="Poet.cpp" />
     <ClCompile Include="TP1.cpp" />
     <ClCompile Include="Writer.cpp" />
   </ItemGroup>

@@ -33,6 +33,11 @@ string* Writer::get_name_books()
 	return name_books;
 }
 
+int Writer::get_number_of_books()
+{
+	return number_of_books;
+}
+
 void Writer::set_fullname(string fullname)
 {
 	this->fullname = fullname;
