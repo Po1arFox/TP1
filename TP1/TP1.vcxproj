@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fantast.h" />
+    <ClInclude Include="Keeper.h" />
     <ClInclude Include="Novelist.h" />
     <ClInclude Include="Poet.h" />
     <ClInclude Include="Writer.h" />
