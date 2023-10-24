@@ -27,7 +27,6 @@ Fantast::Fantast(const Fantast& ref_Fantast)
 Fantast::~Fantast()
 {
 	delete[] name_books;
-	cout << "Вызван деструктор ~Fantast" << endl;
 }
 
 string Fantast::get_fullname()

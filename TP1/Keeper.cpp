@@ -1,5 +1,28 @@
 ﻿#include "Keeper.h"
 
+
+void removeFirstElement(string*& arr, int size) {
+	if (size <= 1) {
+		// Если размер массива меньше или равен 1, нет необходимости в удалении.
+		return;
+	}
+
+	// Создаем новый массив на один элемент меньше
+	string* newArr = new string[size - 1];
+
+	// Копируем строки, начиная с второй (индекс 1)
+	for (int i = 1; i < size; i++) {
+		newArr[i - 1] = arr[i];
+	}
+
+	// Удаляем старый массив и обновляем указатель
+	delete[] arr;
+	arr = newArr;
+
+	// Уменьшаем размер на 1
+	size--;
+}
+
 Keeper::Keeper()
 {
 	this->size_p = 0;
@@ -35,7 +58,6 @@ Keeper::~Keeper()
 	delete[] p;
 	delete[] n;
 	delete[] f;
-	cout << "Вызван деструктор ~Novelist" << endl;
 }
 
 int Keeper::get_size()
@@ -53,6 +75,9 @@ void Keeper::add_poet(string fullname, int year_of_birth, int year_of_death, str
 	new_poets[size_p - 1].set_fullname(fullname);
 	new_poets[size_p - 1].set_years_of_birth(year_of_birth);
 	new_poets[size_p - 1].set_years_of_death(year_of_death);
+	for (int i = 0; i < size_b; i++)
+		new_poets[size_p - 1].add_book(books[i]);
+
 	p = new_poets;
 }
 
@@ -66,7 +91,6 @@ void Keeper::delete_poet(int id)
 		new_poets[k] = p[i];
 		k++;
 	}
-	delete[] p;
 	p = new_poets;
 	size_p--;
 }
@@ -78,10 +102,13 @@ void Keeper::add_novelist(string fullname, int year_of_birth, int year_of_death,
 	for (int i = 0; i < size_n - 1; i++) {
 		new_novelists[i] = n[i];
 	}
-	new_novelists[size_p - 1].set_fullname(fullname);
-	new_novelists[size_p - 1].set_years_of_birth(year_of_birth);
-	new_novelists[size_p - 1].set_years_of_death(year_of_death);
-	new_novelists[size_p - 1].set_biography(biography);
+	new_novelists[size_n - 1].set_fullname(fullname);
+	new_novelists[size_n - 1].set_years_of_birth(year_of_birth);
+	new_novelists[size_n - 1].set_years_of_death(year_of_death);
+	new_novelists[size_n - 1].set_biography(biography);
+	for (int i = 0; i < size_b; i++)
+		new_novelists[size_n - 1].add_book(books[i]);
+
 	n = new_novelists;
 }
 
@@ -96,7 +123,6 @@ void Keeper::delete_novelist(int id)
 		new_novelists[k] = n[i];
 		k++;
 	}
-	delete[] n;
 	n = new_novelists;
 	size_n--;
 }
@@ -110,6 +136,9 @@ void Keeper::add_fantast(string fullname, string* books, int size_b, bool IF)
 	}
 	new_fantast[size_f - 1].set_fullname(fullname);
 	new_fantast[size_f - 1].set_isFilmed(IF);
+	for (int i = 0; i < size_f; i++)
+		new_fantast[size_f - 1].add_book(books[i]);
+
 	f = new_fantast;
 }
 
@@ -124,7 +153,7 @@ void Keeper::delete_fantast(int id)
 		new_fantast[k] = f[i];
 		k++;
 	}
-	delete[] f;
+
 	f = new_fantast;
 	size_f--;
 }
@@ -146,7 +175,6 @@ Fantast Keeper::get_fantast(int id)
 	if (id >= size_f) { return f[0]; }
 	return f[id];
 }
-
 
 
 void Keeper::Save()
@@ -225,6 +253,7 @@ void Keeper::Read()
 				getline(in, new_name_of_book);
 				string* new_books = split(new_name_of_book, ';');
 				int size_books = stoi(new_books[0]);
+				removeFirstElement(new_books, size_books + 1);
 				//присваиваем новые значения
 				add_poet(fn, yob, yod, new_books, size_books);
 			}
@@ -236,6 +265,7 @@ void Keeper::Read()
 				getline(in, new_name_of_book);
 				string* new_books = split(new_name_of_book, ';');
 				int size_books = stoi(new_books[0]);
+				removeFirstElement(new_books, size_books + 1);
 				string bio; getline(in, bio);
 				//присваиваем новые значения
 				add_novelist(fn, yob, yod, new_books, size_books, bio);
@@ -245,6 +275,7 @@ void Keeper::Read()
 				getline(in, new_name_of_book);
 				string* new_books = split(new_name_of_book, ';');
 				int size_books = stoi(new_books[0]);
+				removeFirstElement(new_books, size_books + 1);
 				bool isFilmed; in >> isFilmed;
 
 				//присваиваем новые значения
@@ -268,12 +299,9 @@ void Keeper::print_poet(int id)
 	if (id >= size_p) throw exception("Поэта с данным id не обнаружено");
 	cout << "ФИО: " << p[id].get_fullname() << endl;
 	cout << "Годы жизни: " << p[id].get_years_of_birth() << " - " << p[id].get_years_of_death() << endl;
-	if (p[id].get_number_of_books() == 0) { cout << "Нет книг" << endl; }
-	else if (!have_word(p[0].get_name_books()[0])) {
-		for (int i = 1; i <= p[id].get_number_of_books(); i++) {
-			cout << "Книга " << i << ": ";
-			cout << p[id].get_name_books()[i] << endl;
-		}
+	if (p[id].get_number_of_books() == 0)
+	{
+		cout << "Нет книг" << endl;
 	}
 	else {
 		for (int i = 0; i < p[id].get_number_of_books(); i++) {
@@ -431,24 +459,28 @@ void Keeper::delete_book_fantast(int id)
 	if (p[id].get_number_of_books() == 0) throw exception("У данного фантаста нет книг");
 	else f[id].delete_book();
 }
-
 string* Keeper::split(string str, char ch)
 {
-	stringstream stream(str);
-	string* s = new string();
-	int size = 0;
-	std::string item;
-	while (getline(stream, item, ch)) {
-		size++;
-		string* new_s = new string[size];
-		for (int i = 0; i < size - 1; i++) {
-			new_s[i] = s[i];
+	int count = 1; // Изначально предполагаем, что есть хотя бы одна подстрока
+	for (char c : str) {
+		if (c == ch) {
+			count++;
 		}
-		new_s[size - 1] = item;
-		s = new_s;
 	}
-	stream.flush();
-	return s;
+
+	string* result = new string[count];
+	int partIndex = 0;
+
+	for (char c : str) {
+		if (c != ch) {
+			result[partIndex] += c;
+		}
+		else {
+			partIndex++;
+		}
+	}
+
+	return result;
 }
 
 bool Keeper::have_word(string s)

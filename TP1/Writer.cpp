@@ -8,6 +8,7 @@ void Writer::add_book(string book)
 		new_books[i] = name_books[i];
 	}
 	new_books[number_of_books - 1] = book;
+	delete[] name_books;
 	name_books = new_books;
 }
 

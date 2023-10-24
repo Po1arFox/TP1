@@ -34,7 +34,6 @@ Novelist::Novelist(const Novelist& ref_Novelist)
 Novelist::~Novelist()
 {
 	delete[] name_books;
-	cout << "Вызван деструктор ~Novelist" << endl;
 }
 
 string Novelist::get_fullname()
